@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+@font-face {
+    font-family: 'Maple Mono';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src:
+            url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff2)
+            format('woff2'),
+            url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff)
+            format('woff');
+}
+
+@theme {
+    --breakpoint-xs: 575px;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-xxl: 1600px;
+
+    --color-light-blue: #e6f4ff;
+    --color-blue: #1677ff;
+    --color-light-grey: #fafafa;
+    --color-grey: #8c8c8c;
+    --color-dark-grey: #434343;
+}

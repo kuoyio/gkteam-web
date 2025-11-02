@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AntdProvider from "@/src/components/AntdProvider";
 import AuthProvider from "@/src/components/AuthProvider";
+import Loading from "@/src/components/Loading";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -15,10 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh">
       <body>
         <AuthProvider>
-          <AntdProvider>{children}</AntdProvider>
+          <AntdProvider>
+            {children}
+            <Loading />
+          </AntdProvider>
         </AuthProvider>
       </body>
     </html>

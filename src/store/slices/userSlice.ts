@@ -1,14 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserProfileResponse } from "@/src/type/user";
+import { UserProfileResponse } from "@/src/type";
 
 interface UserState {
   userProfile: UserProfileResponse | null;
-  loading: boolean;
 }
 
 const initialState: UserState = {
   userProfile: null,
-  loading: false,
 };
 
 const userSlice = createSlice({
@@ -21,11 +19,8 @@ const userSlice = createSlice({
     clearUserProfile: (state) => {
       state.userProfile = null;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
   },
 });
 
-export const { setUserProfile, clearUserProfile, setLoading } = userSlice.actions;
+export const { setUserProfile, clearUserProfile } = userSlice.actions;
 export default userSlice.reducer;

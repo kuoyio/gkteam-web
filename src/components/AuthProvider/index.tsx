@@ -1,66 +1,49 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 import { store } from "@/src/store";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import LocalStorageUtil from "@/src/lib/util/localstorage-util";
 import { getUserProfile } from "@/src/api/user";
-import { setUserProfile, setLoading } from "@/src/store/slices/userSlice";
+import { setUserProfile } from "@/src/store/slices/userSlice";
+import { message } from "antd";
 
-const AuthChecker = ({ children }: { children: React.ReactNode }) => {
-  const dispatch = useAppDispatch();
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const token =
+    typeof window !== "undefined" ? LocalStorageUtil.get("token") : null;
   const { userProfile } = useAppSelector((state) => state.user);
-  const [isReady, setIsReady] = useState(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const isLoginPage = pathname === "/login";
-      const token = LocalStorageUtil.get<string>("token");
-
-      if (isLoginPage) {
-        if (token) {
-          setIsReady(true);
-          router.replace("/");
-          return;
-        }
-        setIsReady(true);
-        return;
-      }
-
+    const initialize = async () => {
       if (!token) {
         router.replace("/login");
         return;
       }
 
-      if (userProfile) {
-        setIsReady(true);
+      if (pathname === "/login" && token) {
+        router.replace("/");
         return;
       }
 
-      try {
-        dispatch(setLoading(true));
-        const profile = await getUserProfile();
-        dispatch(setUserProfile(profile));
-        setIsReady(true);
-      } catch (error) {
-        console.error("获取用户信息失败:", error);
-        LocalStorageUtil.remove("token");
-        router.replace("/login");
-      } finally {
-        dispatch(setLoading(false));
+      if (!userProfile) {
+        try {
+          const user = await getUserProfile();
+          dispatch(setUserProfile(user));
+        } catch (e) {
+          message.error((e as Error).message);
+          LocalStorageUtil.remove("token");
+          router.replace("/login");
+        }
       }
     };
 
-    checkAuth();
-  }, [pathname, dispatch, router, userProfile]);
-
-  if (!isReady) {
-    return null;
-  }
+    initialize();
+  }, [dispatch, pathname, router, token, userProfile]);
 
   return <>{children}</>;
 };
@@ -68,10 +51,9 @@ const AuthChecker = ({ children }: { children: React.ReactNode }) => {
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <Provider store={store}>
-      <AuthChecker>{children}</AuthChecker>
+      <AuthGuard>{children}</AuthGuard>
     </Provider>
   );
 };
 
 export default AuthProvider;
-

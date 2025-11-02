@@ -37,8 +37,8 @@ const LoginForm = () => {
           return prev - 1;
         });
       }, 1000);
-    } catch {
-      message.error("发送验证码失败");
+    } catch (e) {
+      message.error((e as Error).message);
     }
   };
 
@@ -54,7 +54,9 @@ const LoginForm = () => {
     try {
       setLoading(true);
       const token = await login({ email, otp });
+
       LocalStorageUtil.set("token", token);
+
       message.success("登录成功");
       router.push("/");
     } catch (e) {

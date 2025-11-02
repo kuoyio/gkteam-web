@@ -1,9 +1,17 @@
 class LocalStorageUtil {
-  static set<T>(key: string, value: T): void {
+  static set(key: string, value: string): void {
+    localStorage.setItem(key, value);
+  }
+
+  static setJson<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  static get<T>(key: string): T | null {
+  static get(key: string): string | null {
+    return localStorage.getItem(key);
+  }
+
+  static getJson<T>(key: string): T | null {
     const json = localStorage.getItem(key);
     if (!json) return null;
     try {

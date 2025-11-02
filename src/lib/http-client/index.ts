@@ -1,11 +1,13 @@
 import { Response } from "@/src/type/common";
+import LocalStorageUtil from "@/src/lib/util/localstorage-util";
+
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 interface RequestOptions {
   headers?: Record<string, string>;
   params?: Record<string, any>;
   body?: any;
-  token?: string;
+  isNeedToken?: boolean;
 }
 
 const BASE_URL =
@@ -25,7 +27,17 @@ class HttpClient {
     url: string,
     options: RequestOptions = {},
   ): Promise<T> {
-    const { headers = {}, params, body, token } = options;
+    const { headers = {}, params, body, isNeedToken = true } = options;
+
+    let authToken: string | null = null;
+    if (isNeedToken) {
+      authToken = LocalStorageUtil.get<string>("token");
+      
+      if (!authToken && typeof window !== "undefined") {
+        window.location.href = "/login";
+        throw new Error("未登录，请先登录");
+      }
+    }
 
     const fullUrl = `${BASE_URL}/${this.buildUrl(url, params)}`;
 
@@ -33,12 +45,19 @@ class HttpClient {
       method,
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
         ...headers,
       },
       ...(body ? { body: JSON.stringify(body) } : {}),
       cache: "no-store",
     });
+
+    if (res.status === 401 && typeof window !== "undefined") {
+      LocalStorageUtil.remove("token");
+      window.location.href = "/login";
+      throw new Error("登录已过期，请重新登录");
+    }
+
     const result: Response<T> = await res.json();
     if (result.code) {
       throw new Error(result.message);

@@ -3,6 +3,7 @@
 import { Button, Form, Input, message } from "antd";
 import { MailOutlined, SafetyOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { sendOtp } from "@/src/api/email";
 import { OtpType } from "@/src/type/email";
 import { login } from "@/src/api";
@@ -12,6 +13,7 @@ const LoginForm = () => {
   const [form] = Form.useForm();
   const [countdown, setCountdown] = useState(0);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleClickOtpButton = async () => {
     try {
@@ -53,7 +55,8 @@ const LoginForm = () => {
       setLoading(true);
       const token = await login({ email, otp });
       LocalStorageUtil.set("token", token);
-      message.info("登录成功");
+      message.success("登录成功");
+      router.push("/");
     } catch (e) {
       message.error((e as Error).message);
     } finally {

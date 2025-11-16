@@ -61,7 +61,6 @@ class HttpClient {
       });
 
       if (res.status === 401 && typeof window !== "undefined") {
-        LocalStorageUtil.remove("token");
         window.location.href = "/login";
         throw new Error("登录已过期，请重新登录");
       }

@@ -6,3 +6,9 @@ export const login = async (loginRequest: LoginRequest) => {
     isNeedToken: false,
   });
 };
+
+export const logout = async () => {
+  return await HttpClient.post<string>("/auth/logout", null, {
+    isNeedToken: true,
+  });
+};

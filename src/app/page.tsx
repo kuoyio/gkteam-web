@@ -1,42 +1,29 @@
 "use client";
 
-import { useAppSelector } from "@/src/store/hooks";
-import { Button } from "antd";
-import { useRouter } from "next/navigation";
-import LocalStorageUtil from "@/src/lib/util/localstorage-util";
+import { Layout } from "antd";
+import LayoutHeader from "@/src/components/Layout/LayoutHeader";
+import LayoutContent from "@/src/components/Layout/LayoutContent";
+import TextEasterEgg from "@/src/components/TextEasterEgg";
 
 export default function Home() {
-  const { userProfile, loading } = useAppSelector((state) => state.user);
-  const router = useRouter();
-
-  const handleLogout = () => {
-    LocalStorageUtil.remove("token");
-    router.push("/login");
+  const renderBanner = () => {
+    return (
+      <div className="bg-light-blue">
+        <div className="flex flex-col gap-y-4 pt-24 pb-24 text-center">
+          <h1 className="text-blue text-4xl font-bold">公考小分队</h1>
+          <h2 className="text-3xl font-bold">考试不费脑，小分队陪跑</h2>
+          <TextEasterEgg />
+        </div>
+      </div>
+    );
   };
 
-  if (loading) {
-    return <div className="p-8">加载中...</div>;
-  }
-
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">欢迎来到首页</h1>
-      {userProfile && (
-        <div className="space-y-2">
-          <p>
-            <span className="font-semibold">用户ID:</span> {userProfile.id}
-          </p>
-          <p>
-            <span className="font-semibold">用户名:</span> {userProfile.name}
-          </p>
-          <p>
-            <span className="font-semibold">邮箱:</span> {userProfile.email}
-          </p>
-          <Button onClick={handleLogout} className="mt-4">
-            退出登录
-          </Button>
-        </div>
-      )}
-    </div>
+    <Layout className="min-h-screen">
+      <LayoutHeader />
+      <LayoutContent>
+        <section className="flex flex-col">{renderBanner()}</section>
+      </LayoutContent>
+    </Layout>
   );
 }

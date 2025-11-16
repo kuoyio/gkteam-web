@@ -19,26 +19,33 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const user = await getUserProfile();
+        dispatch(setUserProfile(user));
+      } catch (e) {
+        message.error((e as Error).message);
+        router.replace("/login");
+      }
+    };
+
     const initialize = async () => {
+      const isHome = pathname === "/";
+      const isLogin = pathname === "/login";
+
       if (!token) {
+        if (isHome || isLogin) return;
         router.replace("/login");
         return;
       }
 
-      if (pathname === "/login" && token) {
+      if (isLogin) {
         router.replace("/");
         return;
       }
 
       if (!userProfile) {
-        try {
-          const user = await getUserProfile();
-          dispatch(setUserProfile(user));
-        } catch (e) {
-          message.error((e as Error).message);
-          LocalStorageUtil.remove("token");
-          router.replace("/login");
-        }
+        await fetchUserProfile();
       }
     };
 

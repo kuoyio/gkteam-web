@@ -4,6 +4,7 @@ import { Layout } from "antd";
 import LayoutHeader from "@/src/components/Layout/LayoutHeader";
 import LayoutContent from "@/src/components/Layout/LayoutContent";
 import TextEasterEgg from "@/src/components/TextEasterEgg";
+import LayoutFooter from "@/src/components/Layout/LayoutFooter";
 
 export default function Home() {
   const renderBanner = () => {
@@ -24,6 +25,7 @@ export default function Home() {
       <LayoutContent>
         <section className="flex flex-col">{renderBanner()}</section>
       </LayoutContent>
+      <LayoutFooter />
     </Layout>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import LoginForm from "@/src/app/(auth)/login/components/LoginForm";
+import LoginForm from "@/src/app/login/components/LoginForm";
 import Logo from "@/src/components/Logo/logo";
 import { useEffect } from "react";
 import { clearUserProfile } from "@/src/store/slices/userSlice";

@@ -11,7 +11,7 @@ export default function Home() {
       <div className="bg-light-blue">
         <div className="flex flex-col gap-y-4 pt-24 pb-24 text-center">
           <h1 className="text-blue text-4xl font-bold">公考小分队</h1>
-          <h2 className="text-3xl font-bold">考试不费脑，小分队陪跑</h2>
+          <h2 className="text-3xl font-bold">欢迎来到小K的公考训练营</h2>
           <TextEasterEgg />
         </div>
       </div>

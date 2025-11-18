@@ -18,7 +18,7 @@ export default function LoginPage() {
           <div className="flex flex-col gap-y-1">
             <Logo />
             <span className="text-sm text-dark-grey text-center">
-              考试不费脑，小分队陪跑
+              欢迎来到小K的公考训练营
             </span>
           </div>
           <LoginForm />

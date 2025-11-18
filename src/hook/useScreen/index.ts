@@ -36,7 +36,9 @@ const createScreen = (width: number): Screen => {
 
 const useScreen = (): Screen => {
   const [screen, setScreen] = useState<Screen>(() =>
-    createScreen(window.innerWidth),
+    typeof window === "undefined"
+      ? createScreen(1200)
+      : createScreen(window.innerWidth),
   );
 
   useEffect(() => {

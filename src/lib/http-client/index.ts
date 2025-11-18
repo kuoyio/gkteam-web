@@ -20,6 +20,8 @@ const BASE_URL =
     ? "/api/external"
     : process.env.NEXT_PUBLIC_API_BASE_URL;
 
+const DEFAULT_ERROR_MESSAGE = "服务暂时不可用，请稍后再试";
+
 class HttpClient {
   private static buildUrl(url: string, params?: Record<string, any>) {
     if (!params) return url;
@@ -38,38 +40,55 @@ class HttpClient {
 
     try {
       let authToken: string | null = null;
-      if (isNeedToken) {
-        authToken = LocalStorageUtil.get<string>("token");
-
-        if (!authToken && typeof window !== "undefined") {
+      if (isNeedToken && typeof window !== "undefined") {
+        authToken = LocalStorageUtil.get("token");
+        if (!authToken) {
           window.location.href = "/login";
           throw new Error("未登录，请先登录");
         }
       }
 
-      const fullUrl = `${BASE_URL}/${this.buildUrl(url, params)}`;
+      const cleanBase = BASE_URL?.replace(/\/+$/, "") ?? "";
+      const cleanUrl = url.replace(/^\/+/, "");
+      const fullUrl = `${cleanBase}/${this.buildUrl(cleanUrl, params)}`;
 
-      const res = await fetch(fullUrl, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
-          ...headers,
-        },
-        ...(body ? { body: JSON.stringify(body) } : {}),
-        cache: "no-store",
-      });
+      let res: Response<T> | undefined;
 
-      if (res.status === 401 && typeof window !== "undefined") {
-        window.location.href = "/login";
-        throw new Error("登录已过期，请重新登录");
+      try {
+        const fetchRes = await fetch(fullUrl, {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+            ...headers,
+          },
+          ...(body ? { body: JSON.stringify(body) } : {}),
+          cache: "no-store",
+        });
+
+        if (fetchRes.status === 401 && typeof window !== "undefined") {
+          window.location.href = "/login";
+          throw new Error("登录已过期，请重新登录");
+        }
+
+        try {
+          res = await fetchRes.json();
+        } catch {
+          throw new Error(DEFAULT_ERROR_MESSAGE);
+        }
+      } catch {
+        throw new Error(DEFAULT_ERROR_MESSAGE);
       }
 
-      const result: Response<T> = await res.json();
-      if (result.code) {
-        throw new Error(result.message);
+      if (!res || typeof res !== "object") {
+        throw new Error(DEFAULT_ERROR_MESSAGE);
       }
-      return result.data as T;
+
+      if (res.code) {
+        throw new Error(res.message || DEFAULT_ERROR_MESSAGE);
+      }
+
+      return res.data as T;
     } finally {
       store.dispatch(decrementLoading());
     }

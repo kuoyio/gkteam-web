@@ -3,3 +3,12 @@ export interface UserProfileResponse {
   name: string;
   email: string;
 }
+
+export interface UpdateUserProfileRequest {
+  name: string;
+}
+
+export interface UpdateUserEmailRequest {
+  email: string;
+  otp: string;
+}

@@ -2,7 +2,6 @@
 
 import { Spin } from "antd";
 import { useAppSelector } from "@/src/store/hooks";
-import "./index.scss";
 
 const Loading = () => {
   const { count } = useAppSelector((state) => state.loading);
@@ -12,7 +11,7 @@ const Loading = () => {
     return null;
   }
 
-  return <Spin wrapperClassName="loading" size="large" fullscreen={true} />;
+  return <Spin size="large" fullscreen={true} />;
 };
 
 export default Loading;

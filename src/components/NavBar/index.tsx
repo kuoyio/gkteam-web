@@ -1,5 +1,5 @@
 import { Button, Drawer, Menu } from "antd";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   HomeOutlined,
@@ -27,6 +27,11 @@ const NavBar = () => {
   const { userProfile } = useAppSelector((state) => state.user);
   const screen = useScreen();
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const selectedKey = useMemo(() => {
     return pathname;
@@ -72,6 +77,10 @@ const NavBar = () => {
     },
     [router, screen],
   );
+
+  if (!mounted) {
+    return null;
+  }
 
   if (screen.isMobile) {
     return (

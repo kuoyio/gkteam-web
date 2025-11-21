@@ -1,4 +1,5 @@
 import { Layout } from "antd";
+import Link from "next/link";
 
 const { Footer } = Layout;
 const LayoutFooter = () => {
@@ -12,6 +13,13 @@ const LayoutFooter = () => {
       <span className="text-xs text-gray-500">
         © {year} GKTeam. 保留所有权利
       </span>
+      <Link
+        href="https://beian.miit.gov.cn/#/Integrated/index"
+        passHref={true}
+        target={"_blank"}
+      >
+        <span className="text-xs text-gray-500">{"粤ICP备2020111542号-6"}</span>
+      </Link>
     </Footer>
   );
 };

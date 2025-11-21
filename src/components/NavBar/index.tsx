@@ -1,5 +1,5 @@
 import { Button, Drawer, Menu } from "antd";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   HomeOutlined,
@@ -21,38 +21,35 @@ const NavBarItems = [
   },
 ];
 
+const UserNavBarItems = {
+  key: "/user",
+  label: "个人中心",
+  icon: <UserOutlined />,
+  children: [
+    { key: "/profile", label: "账号信息", icon: <ProfileOutlined /> },
+    { key: "/logout", label: "退出登录", icon: <LogoutOutlined /> },
+  ],
+};
+
+const LoginNavBarItems = {
+  key: "/login",
+  label: "登录",
+  icon: <LoginOutlined />,
+};
+
 const NavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { userProfile } = useAppSelector((state) => state.user);
   const screen = useScreen();
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const selectedKey = useMemo(() => {
     return pathname;
   }, [pathname]);
 
   const getUserNavBarItem = useCallback(() => {
-    return userProfile
-      ? {
-          key: "/user",
-          label: userProfile.name,
-          icon: <UserOutlined />,
-          children: [
-            { key: "/profile", label: "个人中心", icon: <ProfileOutlined /> },
-            { key: "/logout", label: "退出登录", icon: <LogoutOutlined /> },
-          ],
-        }
-      : {
-          key: "/login",
-          label: "登录",
-          icon: <LoginOutlined />,
-        };
+    return userProfile ? UserNavBarItems : LoginNavBarItems;
   }, [userProfile]);
 
   const navItems = useMemo(() => {
@@ -77,10 +74,6 @@ const NavBar = () => {
     },
     [router, screen],
   );
-
-  if (!mounted) {
-    return null;
-  }
 
   if (screen.isMobile) {
     return (

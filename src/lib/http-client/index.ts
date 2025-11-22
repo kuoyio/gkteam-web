@@ -15,10 +15,7 @@ interface RequestOptions {
   isNeedToken?: boolean;
 }
 
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "/api/external"
-    : process.env.NEXT_PUBLIC_API_BASE_URL;
+const BASE_URL = "/api/external";
 
 const DEFAULT_ERROR_MESSAGE = "服务暂时不可用，请稍后再试";
 

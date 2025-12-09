@@ -1,3 +1,5 @@
+"use client";
+
 import { Layout } from "antd";
 import Logo from "@/src/components/Logo/logo";
 import NavBar from "@/src/components/NavBar";

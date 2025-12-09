@@ -11,7 +11,6 @@ import {
 } from "@ant-design/icons";
 import { useAppSelector } from "@/src/store/hooks";
 import { logout } from "@/src/api";
-import useScreen from "@/src/hook/useScreen";
 
 const NavBarItems = [
   {
@@ -41,7 +40,6 @@ const NavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { userProfile } = useAppSelector((state) => state.user);
-  const screen = useScreen();
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   const selectedKey = useMemo(() => {
@@ -56,10 +54,6 @@ const NavBar = () => {
     return [...NavBarItems, getUserNavBarItem()];
   }, [getUserNavBarItem]);
 
-  const toggleDrawer = () => {
-    setDrawerVisible(!drawerVisible);
-  };
-
   const handleClickNavBarItem = useCallback(
     async ({ key }: { key: string }) => {
       if (key === "/logout") {
@@ -67,25 +61,23 @@ const NavBar = () => {
         router.push("/login");
         return;
       }
-      if (screen.isMobile) {
-        setDrawerVisible(false);
-      }
+      setDrawerVisible(false);
       router.push(key);
     },
-    [router, screen],
+    [router],
   );
 
-  if (screen.isMobile) {
-    return (
-      <nav>
+  return (
+    <nav>
+      <div className="md:hidden">
         <Button
           type="text"
           icon={<MenuOutlined />}
-          onClick={toggleDrawer}
+          onClick={() => setDrawerVisible(true)}
           size="large"
         />
         <Drawer
-          width={300}
+          size={300}
           styles={{
             body: { padding: 0 },
           }}
@@ -103,21 +95,19 @@ const NavBar = () => {
             className="!border-r-0"
           />
         </Drawer>
-      </nav>
-    );
-  }
+      </div>
 
-  return (
-    <nav>
-      <Menu
-        mode="horizontal"
-        selectedKeys={[selectedKey]}
-        items={navItems}
-        onClick={handleClickNavBarItem}
-        theme="light"
-        style={{ border: "none" }}
-        disabledOverflow={true}
-      />
+      <div className="hidden md:block">
+        <Menu
+          mode="horizontal"
+          selectedKeys={[selectedKey]}
+          items={navItems}
+          onClick={handleClickNavBarItem}
+          theme="light"
+          style={{ border: "none" }}
+          disabledOverflow={true}
+        />
+      </div>
     </nav>
   );
 };

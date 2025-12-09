@@ -1,9 +1,10 @@
 "use client";
 
-import { Button, Form, Input, message } from "antd";
+import { Button, Checkbox, Form, Input, message } from "antd";
 import { MailOutlined, SafetyOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { sendOtp } from "@/src/api/email";
 import { OtpType } from "@/src/type/email";
 import { login } from "@/src/api";
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const [form] = Form.useForm();
   const [countdown, setCountdown] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const router = useRouter();
 
   const handleClickOtpButton = async () => {
@@ -68,7 +70,7 @@ const LoginForm = () => {
 
   return (
     <Form form={form} className="w-full">
-      <div className="space-y-2">
+      <div className="!space-y-4">
         <Form.Item
           name="email"
           rules={[
@@ -98,11 +100,36 @@ const LoginForm = () => {
           </div>
         </Form.Item>
         <Form.Item>
+          <Checkbox
+            checked={agreeTerms}
+            onChange={(e) => setAgreeTerms(e.target.checked)}
+            className="text-xs"
+          >
+            我已阅读并同意
+            <Link
+              href="/terms"
+              target="_blank"
+              className="text-ant-blue-500 mx-1"
+            >
+              服务协议
+            </Link>
+            和
+            <Link
+              href="/privacy"
+              target="_blank"
+              className="text-ant-blue-500 mx-1"
+            >
+              隐私条款
+            </Link>
+          </Checkbox>
+        </Form.Item>
+        <Form.Item>
           <Button
             type="primary"
             htmlType="submit"
             className="w-full !text-sm"
             loading={loading}
+            disabled={!agreeTerms}
             onClick={handleLoginButton}
           >
             登录

@@ -10,6 +10,8 @@ import { getUserProfile } from "@/src/api/user";
 import { setUserProfile } from "@/src/store/slices/userSlice";
 import { message } from "antd";
 
+const PUBLIC_ROUTES = ["/", "/login", "/privacy", "/terms"];
+
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -30,16 +32,15 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     };
 
     const initialize = async () => {
-      const isHome = pathname === "/";
-      const isLogin = pathname === "/login";
+      const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
       if (!token) {
-        if (isHome || isLogin) return;
+        if (isPublicRoute) return;
         router.replace("/login");
         return;
       }
 
-      if (isLogin) {
+      if (pathname === "/login") {
         router.replace("/");
         return;
       }

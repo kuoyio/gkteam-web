@@ -23,13 +23,13 @@ const LayoutFooter = () => {
           </Link>
         </div>
         <div className="flex items-center">
-          <Link href="/privacy">
+          <Link href="/privacy" target="_blank">
             <span className="text-sm text-ant-grey-500 hover:text-ant-blue-500">
               隐私政策
             </span>
           </Link>
           <Divider orientation="vertical" />
-          <Link href="/terms">
+          <Link href="/terms" target="_blank">
             <span className="text-sm text-ant-grey-500 hover:text-ant-blue-500">
               服务协议
             </span>

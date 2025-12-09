@@ -36,7 +36,7 @@ const TextEasterEgg = () => {
   };
 
   return (
-    <Text className="text-center text-grey" onClick={handleClick}>
+    <Text className="text-center text-ant-grey-500" onClick={handleClick}>
       {easterEggTexts[currentIndex]}
     </Text>
   );

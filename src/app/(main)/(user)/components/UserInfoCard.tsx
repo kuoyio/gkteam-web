@@ -17,19 +17,19 @@ export default function UserInfoCard() {
   return (
     <Card>
       <div className="flex flex-col items-center gap-y-1">
-        <div className="border border-grey rounded-full">
+        <div className="border border-ant-grey-500 rounded-full">
           <Avatar src="/default-avatar.webp" size={52} />
         </div>
         <span className="text-lg font-semibold">
           {userProfile?.name || "用户名称"}
         </span>
-        <span className="text-grey text-sm">
+        <span className="text-ant-grey-500 text-sm">
           {userProfile?.email || "用户邮箱"}
         </span>
-        <div className="flex items-center justify-center gap-2 text-grey text-xs">
+        <div className="flex items-center justify-center gap-2 text-ant-grey-500 text-xs">
           <span>ID: {userProfile?.id || "USER123456"}</span>
           <CopyOutlined
-            className="cursor-pointer hover:text-blue-500"
+            className="cursor-pointer hover:text-ant-blue-500"
             onClick={handleCopyId}
           />
         </div>

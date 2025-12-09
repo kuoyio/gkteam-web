@@ -9,9 +9,9 @@ import LayoutFooter from "@/src/components/Layout/LayoutFooter";
 export default function Home() {
   const renderBanner = () => {
     return (
-      <div className="bg-light-blue">
+      <div className="bg-ant-blue-50">
         <div className="flex flex-col gap-y-4 pt-24 pb-24 text-center">
-          <h1 className="text-blue text-4xl font-bold">公考小分队</h1>
+          <h1 className="text-ant-blue-500 text-4xl font-bold">公考小分队</h1>
           <h2 className="text-3xl font-bold">欢迎来到小K的公考训练营</h2>
           <TextEasterEgg />
         </div>

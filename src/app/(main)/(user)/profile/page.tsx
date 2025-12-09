@@ -30,7 +30,7 @@ export default function ProfilePage() {
       </Title>
 
       <div className="flex justify-center mb-6">
-        <div className="border border-grey rounded-full">
+        <div className="border border-ant-grey-500 rounded-full">
           <Avatar src="/default-avatar.webp" size={80} />
         </div>
       </div>
@@ -39,7 +39,7 @@ export default function ProfilePage() {
         <div className="flex justify-between items-center pb-4 border-b border-gray-200">
           <div className="flex flex-col gap-y-1">
             <span>用户ID</span>
-            <span className="text-grey">{userProfile?.id || ""}</span>
+            <span className="text-ant-grey-500">{userProfile?.id || ""}</span>
           </div>
           <CopyOutlined className="cursor-pointer" onClick={handleCopyId} />
         </div>
@@ -47,7 +47,7 @@ export default function ProfilePage() {
         <div className="flex justify-between items-center pb-4 border-b border-gray-200">
           <div className="flex flex-col gap-y-1">
             <span>用户名</span>
-            <span className="text-grey">{userProfile?.name || ""}</span>
+            <span className="text-ant-grey-500">{userProfile?.name || ""}</span>
           </div>
           <EditOutlined
             className="cursor-pointer"
@@ -58,7 +58,9 @@ export default function ProfilePage() {
         <div className="flex justify-between items-center pb-4 border-b border-gray-200">
           <div className="flex flex-col gap-y-1">
             <span>邮箱</span>
-            <span className="text-grey">{userProfile?.email || ""}</span>
+            <span className="text-ant-grey-500">
+              {userProfile?.email || ""}
+            </span>
           </div>
           <EditOutlined
             className="cursor-pointer"

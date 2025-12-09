@@ -18,7 +18,9 @@ const Logo = () => {
         alt={"logo"}
         preview={false}
       />
-      <h1 className={`text-2xl font-bold text-blue ${shrikhand.className}`}>
+      <h1
+        className={`text-2xl font-bold text-ant-blue-500 ${shrikhand.className}`}
+      >
         GKTeam
       </h1>
     </Link>

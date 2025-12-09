@@ -6,7 +6,7 @@ const { Content } = Layout;
 const LayoutContent = ({ children }: { children: React.ReactNode }) => {
   return (
     <Content
-      className="!min-h-[calc(100vh-64px-64px)]"
+      className="!min-h-[calc(100vh-64px)]"
       style={{
         backgroundColor: "#ffffff",
       }}

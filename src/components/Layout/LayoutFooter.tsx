@@ -1,38 +1,40 @@
-import { Layout } from "antd";
+import { Divider, Layout } from "antd";
 import Link from "next/link";
 
 const { Footer } = Layout;
+
 const LayoutFooter = () => {
   const year = new Date().getFullYear();
 
   return (
-    <Footer
-      style={{ backgroundColor: "#ffffff" }}
-      className="flex flex-col items-center justify-center h-16 mt-auto layout-footer gap-y-1"
-    >
-      <span className="text-xs text-ant-grey-500">
-        © {year} 公考小分队版权所有
-      </span>
-      <div className="flex items-center gap-x-3">
-        <Link
-          href="https://beian.miit.gov.cn/#/Integrated/index"
-          passHref={true}
-          target={"_blank"}
-        >
-          <span className="text-xs text-ant-grey-500">
-            {"粤ICP备2020111542号-6"}
+    <Footer className="bg-white border-t border-ant-grey-100 py-6 mt-auto">
+      <div className="max-w-[1200px] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-1">
+        <div className="flex flex-col items-center md:items-start gap-1">
+          <span className="text-sm text-ant-grey-500">
+            © {year} 公考小分队版权所有
           </span>
-        </Link>
-        <Link href="/privacy" passHref={true}>
-          <span className="text-xs text-ant-grey-500 hover:text-ant-blue-500 cursor-pointer">
-            隐私政策
-          </span>
-        </Link>
-        <Link href="/terms" passHref={true}>
-          <span className="text-xs text-ant-grey-500 hover:text-ant-blue-500 cursor-pointer">
-            服务协议
-          </span>
-        </Link>
+          <Link
+            href="https://beian.miit.gov.cn/#/Integrated/index"
+            target="_blank"
+          >
+            <span className="text-xs text-ant-grey-400 hover:text-ant-blue-500">
+              粤ICP备2020111542号-6
+            </span>
+          </Link>
+        </div>
+        <div className="flex items-center">
+          <Link href="/privacy">
+            <span className="text-sm text-ant-grey-500 hover:text-ant-blue-500">
+              隐私政策
+            </span>
+          </Link>
+          <Divider orientation="vertical" />
+          <Link href="/terms">
+            <span className="text-sm text-ant-grey-500 hover:text-ant-blue-500">
+              服务协议
+            </span>
+          </Link>
+        </div>
       </div>
     </Footer>
   );

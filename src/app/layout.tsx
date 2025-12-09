@@ -7,7 +7,7 @@ import Loading from "@/src/components/Loading";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "GKTeam - 公考小分队",
+  title: "公考小分队",
   description: "小K的公考训练营",
 };
 

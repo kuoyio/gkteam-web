@@ -9,8 +9,10 @@ import {
   ProfileOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useAppSelector } from "@/src/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { logout } from "@/src/api";
+import { clearUserProfile } from "@/src/store/slices/userSlice";
+import LocalStorageUtil from "@/src/lib/util/localstorage-util";
 
 const NavBarItems = [
   {
@@ -39,6 +41,7 @@ const LoginNavBarItems = {
 const NavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { userProfile } = useAppSelector((state) => state.user);
   const [drawerVisible, setDrawerVisible] = useState(false);
 
@@ -58,13 +61,15 @@ const NavBar = () => {
     async ({ key }: { key: string }) => {
       if (key === "/logout") {
         await logout();
+        dispatch(clearUserProfile());
+        LocalStorageUtil.remove("token");
         router.push("/login");
         return;
       }
       setDrawerVisible(false);
       router.push(key);
     },
-    [router],
+    [router, dispatch],
   );
 
   return (

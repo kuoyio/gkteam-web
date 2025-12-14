@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "公考小分队网站隐私政策，说明我们如何收集、使用和保护您的个人信息。",
 };
 
-const PrivacyPage = () => {
+export default function PrivacyPage() {
   const updatedAt = "2025年12月9日";
 
   return (
@@ -218,6 +218,4 @@ const PrivacyPage = () => {
       </p>
     </div>
   );
-};
-
-export default PrivacyPage;
+}

@@ -2,11 +2,19 @@ import { Button, Drawer, Menu } from "antd";
 import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  BankOutlined,
+  BulbOutlined,
+  CalculatorOutlined,
+  CommentOutlined,
+  GlobalOutlined,
   HomeOutlined,
+  InfoCircleOutlined,
+  LineChartOutlined,
   LoginOutlined,
   LogoutOutlined,
   MenuOutlined,
   ProfileOutlined,
+  ShareAltOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
@@ -19,6 +27,48 @@ const NavBarItems = [
     key: "/",
     label: "主页",
     icon: <HomeOutlined />,
+  },
+  {
+    key: "/xingce",
+    label: "行测",
+    icon: <BulbOutlined />,
+    children: [
+      {
+        key: "/note/166760824663314401",
+        label: "基本介绍",
+        icon: <InfoCircleOutlined />,
+      },
+      {
+        key: "/note/166760824663314402",
+        label: "公基常识",
+        icon: <GlobalOutlined />,
+      },
+      {
+        key: "/note/166760824663314403",
+        label: "政治理论",
+        icon: <BankOutlined />,
+      },
+      {
+        key: "/note/166760824663314404",
+        label: "言语理解",
+        icon: <CommentOutlined />,
+      },
+      {
+        key: "/note/166760824663314405",
+        label: "数量关系",
+        icon: <CalculatorOutlined />,
+      },
+      {
+        key: "/note/166760824663314406",
+        label: "判断推理",
+        icon: <ShareAltOutlined />,
+      },
+      {
+        key: "/note/166760824663314407",
+        label: "资料分析",
+        icon: <LineChartOutlined />,
+      },
+    ],
   },
 ];
 

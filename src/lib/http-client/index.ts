@@ -1,12 +1,10 @@
-import { Response } from "@/src/type/common";
+import { HttpMethod, Response } from "@/src/type/common";
 import LocalStorageUtil from "@/src/lib/util/localstorage-util";
 import { store } from "@/src/store";
 import {
   incrementLoading,
   decrementLoading,
 } from "@/src/store/slices/loadingSlice";
-
-export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 interface RequestOptions {
   headers?: Record<string, string>;

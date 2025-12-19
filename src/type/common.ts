@@ -11,3 +11,5 @@ export interface PageResult<T> {
   totalPages: number;
   data?: T[] | null;
 }
+
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";

@@ -1,8 +1,8 @@
 "use client";
 
 import { Card, Row, Col, Flex } from "antd";
-import UserInfoCard from "./components/UserInfoCard";
-import UserMenu from "./components/UserMenu";
+import UserInfoCard from "@/src/app/(main)/user/components/UserInfoCard";
+import UserMenu from "@/src/app/(main)/user/components/UserMenu";
 import React from "react";
 
 interface UserLayoutProps {

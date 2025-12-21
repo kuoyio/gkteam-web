@@ -7,8 +7,8 @@ const LayoutFooter = () => {
   const year = new Date().getFullYear();
 
   return (
-    <Footer className="bg-white border-t border-ant-grey-100 py-6 mt-auto">
-      <div className="max-w-[1200px] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-1">
+    <Footer className="bg-white border-t border-ant-grey-100 !p-0">
+      <div className="flex flex-col md:flex-row justify-between items-center py-4 px-4 sm:px-6">
         <div className="flex flex-col items-center md:items-start gap-1">
           <span className="text-sm text-ant-grey-500">
             © {year} 公考小分队版权所有

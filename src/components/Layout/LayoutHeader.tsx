@@ -1,8 +1,8 @@
 "use client";
 
 import { Layout } from "antd";
-import Logo from "@/src/components/Logo/logo";
-import NavBar from "@/src/components/NavBar";
+import Logo from "@/src/components/Logo";
+import { SiteNavBar, UserNavBar, DrawerNavBar } from "@/src/components/NavBar";
 const { Header } = Layout;
 
 const LayoutHeader = () => {
@@ -17,9 +17,17 @@ const LayoutHeader = () => {
       }}
       className="drop-shadow-md"
     >
-      <div className="flex items-center justify-between px-4 sm:px-6">
+      <div className="hidden md:flex items-center px-4 sm:px-6 h-full">
         <Logo />
-        <NavBar />
+        <div className="flex-1 flex justify-center">
+          <SiteNavBar />
+        </div>
+        <UserNavBar />
+      </div>
+
+      <div className="flex md:hidden items-center justify-between px-4 h-full">
+        <Logo />
+        <DrawerNavBar />
       </div>
     </Header>
   );

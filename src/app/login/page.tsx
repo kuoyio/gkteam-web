@@ -1,6 +1,6 @@
 "use client";
 import LoginForm from "@/src/app/login/components/LoginForm";
-import Logo from "@/src/components/Logo/logo";
+import Logo from "@/src/components/Logo";
 import { useEffect } from "react";
 import { clearUserProfile } from "@/src/store/slices/userSlice";
 import LocalStorageUtil from "@/src/lib/util/localstorage-util";

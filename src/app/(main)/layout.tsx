@@ -1,8 +1,10 @@
 "use client";
 import { Layout } from "antd";
-import LayoutHeader from "@/src/components/Layout/LayoutHeader";
-import LayoutContent from "@/src/components/Layout/LayoutContent";
-import LayoutFooter from "@/src/components/Layout/LayoutFooter";
+import {
+  LayoutHeader,
+  LayoutContent,
+  LayoutFooter,
+} from "@/src/components/Layout";
 import React from "react";
 
 export default function MainLayout({
@@ -13,9 +15,7 @@ export default function MainLayout({
   return (
     <Layout className="min-h-screen">
       <LayoutHeader />
-      <LayoutContent>
-        <section className="max-w-[1200px] mx-auto p-4">{children}</section>
-      </LayoutContent>
+      <LayoutContent>{children}</LayoutContent>
       <LayoutFooter />
     </Layout>
   );

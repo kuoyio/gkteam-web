@@ -11,12 +11,12 @@ export default function PrivacyPage() {
   const updatedAt = "2025年12月9日";
 
   return (
-    <div className="py-8">
+    <div>
       <h1 className="text-3xl font-bold mb-4 text-ant-grey-800">隐私政策</h1>
       <p className="text-sm text-ant-grey-500 mb-6">更新日期：{updatedAt}</p>
 
       <p className="mb-4 text-ant-grey-700 leading-relaxed">
-        欢迎使用“公考小分队”（以下简称“本网站”或“我们”）。我们非常重视您的个人信息和隐私保护。本隐私政策旨在向您说明我们在您使用本网站及相关服务时如何收集、使用、存储、共享和保护您的个人信息，以及您所享有的权利。
+        欢迎使用"公考小分队"（以下简称"本网站"或"我们"）。我们非常重视您的个人信息和隐私保护。本隐私政策旨在向您说明我们在您使用本网站及相关服务时如何收集、使用、存储、共享和保护您的个人信息，以及您所享有的权利。
       </p>
       <p className="mb-6 text-ant-grey-700 leading-relaxed">
         请在使用本网站及相关服务前，仔细阅读并充分理解本隐私政策的全部内容。一旦您开始使用或继续使用本网站，即视为您已阅读、理解并同意本隐私政策的全部内容。

@@ -1,10 +1,12 @@
 "use client";
 
 import { Layout } from "antd";
-import LayoutHeader from "@/src/components/Layout/LayoutHeader";
-import LayoutContent from "@/src/components/Layout/LayoutContent";
+import {
+  LayoutHeader,
+  LayoutContent,
+  LayoutFooter,
+} from "@/src/components/Layout";
 import TextEasterEgg from "@/src/components/TextEasterEgg";
-import LayoutFooter from "@/src/components/Layout/LayoutFooter";
 
 export default function Home() {
   const renderBanner = () => {

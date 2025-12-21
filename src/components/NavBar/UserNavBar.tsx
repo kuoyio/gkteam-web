@@ -20,7 +20,7 @@ export const UserNavBarItems = [
     label: "个人中心",
     icon: <UserOutlined />,
     children: [
-      { key: "/profile", label: "账号信息", icon: <ProfileOutlined /> },
+      { key: "/user/profile", label: "账号信息", icon: <ProfileOutlined /> },
       { key: "/logout", label: "退出登录", icon: <LogoutOutlined /> },
     ],
   },

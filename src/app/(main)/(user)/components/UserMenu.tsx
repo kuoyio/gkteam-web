@@ -10,7 +10,7 @@ export default function UserMenu() {
 
   const menuItems = [
     {
-      key: "/profile",
+      key: "/user/profile",
       icon: <ProfileOutlined />,
       label: "账号信息",
     },

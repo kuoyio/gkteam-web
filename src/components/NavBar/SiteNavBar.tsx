@@ -14,7 +14,7 @@ import {
 
 export const SiteNavBarItems = [
   {
-    key: "/note",
+    key: "/note/169332126339173300",
     label: "知识笔记",
     icon: <ReadOutlined />,
   },

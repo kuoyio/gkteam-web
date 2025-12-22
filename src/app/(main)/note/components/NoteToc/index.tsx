@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { Anchor } from "antd";
 
 interface TocItem {
@@ -16,12 +16,7 @@ interface NoteTocProps {
 }
 
 export function NoteToc({ content, inDrawer = false }: NoteTocProps) {
-  const [tocItems, setTocItems] = useState<TocItem[]>([]);
-
-  useEffect(() => {
-    const items = extractHeadings(content);
-    setTocItems(items);
-  }, [content]);
+  const tocItems = useMemo(() => extractHeadings(content), [content]);
 
   if (tocItems.length === 0) {
     return null;

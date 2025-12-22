@@ -1,0 +1,207 @@
+.markdown {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #2c3e50;
+  word-wrap: break-word;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #1a1a1a;
+    scroll-margin-top: 80px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h1 {
+    font-size: 2em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  h3 {
+    font-size: 1.25em;
+  }
+
+  h4 {
+    font-size: 1.1em;
+  }
+
+  h5 {
+    font-size: 1em;
+  }
+
+  h6 {
+    font-size: 0.95em;
+    color: #6a737d;
+  }
+
+  p {
+    margin: 1em 0;
+  }
+
+  a {
+    color: #1677ff;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #4096ff;
+      text-decoration: underline;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  ul,
+  ol {
+    padding-left: 2em;
+    margin: 1em 0;
+
+    li {
+      margin: 0.5em 0;
+    }
+
+    ul,
+    ol {
+      margin: 0.25em 0;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+
+    ul {
+      list-style-type: circle;
+
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  hr {
+    margin: 2em 0;
+    border: none;
+    border-top: 1px solid #e8e8e8;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1em 0;
+  }
+
+  .inlineCode {
+    padding: 0.2em 0.4em;
+    margin: 0 0.1em;
+    font-size: 0.9em;
+    font-family: "Maple Mono", "SF Mono", Monaco, "Cascadia Code", Consolas,
+      monospace;
+    background-color: #f6f8fa;
+    border-radius: 4px;
+    color: #d63384;
+  }
+
+  .codeBlock {
+    display: block;
+    padding: 1em 1.25em;
+    margin: 1em 0;
+    font-size: 0.875em;
+    font-family: "Maple Mono", "SF Mono", Monaco, "Cascadia Code", Consolas,
+      monospace;
+    line-height: 1.6;
+    background-color: #282c34;
+    border-radius: 8px;
+    overflow-x: auto;
+    color: #abb2bf;
+
+    code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+      color: inherit;
+    }
+  }
+
+  .blockquote {
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    border-left: 4px solid #1677ff;
+    background-color: #f6f8fa;
+    color: #6a737d;
+    border-radius: 0 4px 4px 0;
+
+    p {
+      margin: 0.5em 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+    margin: 1em 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+
+    th,
+    td {
+      padding: 0.75em 1em;
+      border: 1px solid #e8e8e8;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fafafa;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #fafafa;
+    }
+  }
+
+  input[type="checkbox"] {
+    margin-right: 0.5em;
+    cursor: pointer;
+  }
+}
+

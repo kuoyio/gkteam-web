@@ -7,7 +7,7 @@ import NoteToc from "../components/NoteToc";
 import NoteNavBar from "../components/NoteNavBar";
 
 export const dynamic = "force-static";
-export const dynamicParams = false;
+export const revalidate = 3600;
 
 interface NoteDetailPageProps {
   params: Promise<{ id: string }>;

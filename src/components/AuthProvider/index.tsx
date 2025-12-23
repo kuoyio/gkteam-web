@@ -10,7 +10,13 @@ import { getUserProfile } from "@/src/api/user";
 import { setUserProfile } from "@/src/store/slices/userSlice";
 import { message } from "antd";
 
-const PUBLIC_ROUTES = ["/", "/login", "/site/privacy", "/site/terms"];
+const PUBLIC_ROUTES = [
+  "/",
+  "/login",
+  "/site/privacy",
+  "/site/terms",
+  "/site/changelog",
+];
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();

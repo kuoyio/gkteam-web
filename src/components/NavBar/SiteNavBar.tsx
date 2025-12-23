@@ -5,6 +5,7 @@ import { useMemo, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   FileTextOutlined,
+  HistoryOutlined,
   InfoCircleOutlined,
   QuestionCircleOutlined,
   ReadOutlined,
@@ -42,6 +43,11 @@ export const SiteNavBarItems = [
         key: "/site/terms",
         label: "服务条款",
         icon: <FileTextOutlined />,
+      },
+      {
+        key: "/site/changelog",
+        label: "更新日志",
+        icon: <HistoryOutlined />,
       },
     ],
   },

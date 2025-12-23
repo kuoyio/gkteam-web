@@ -41,7 +41,7 @@ export const SiteNavBarItems = [
       },
       {
         key: "/site/terms",
-        label: "服务条款",
+        label: "服务协议",
         icon: <FileTextOutlined />,
       },
       {

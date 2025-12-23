@@ -13,7 +13,7 @@ interface RequestOptions {
   isNeedToken?: boolean;
 }
 
-const BASE_URL = "/api/external";
+const BASE_URL = "/api";
 
 const DEFAULT_ERROR_MESSAGE = "服务暂时不可用，请稍后再试";
 

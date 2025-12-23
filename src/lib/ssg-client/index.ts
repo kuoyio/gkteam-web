@@ -13,9 +13,15 @@ const getBaseUrl = () => {
       process.env.NODE_ENV === "development"
         ? "http://localhost:8080"
         : process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    if (!apiUrl) {
+      throw new Error(
+        "NEXT_PUBLIC_API_BASE_URL environment variable is not set"
+      );
+    }
     return `${apiUrl}/ssg`;
   }
-  return "/api/external/ssg";
+  return "/api/ssg";
 };
 
 const DEFAULT_ERROR_MESSAGE = "服务暂时不可用，请稍后再试";
@@ -30,7 +36,7 @@ class SSGClient {
   private static async request<T>(
     method: HttpMethod,
     url: string,
-    options: RequestOptions = {},
+    options: RequestOptions = {}
   ): Promise<T> {
     const { headers = {}, params, body, revalidate } = options;
 

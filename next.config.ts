@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    optimizePackageImports: ["antd", "@ant-design/icons"],
+  },
   async rewrites() {
     const apiUrl =
       process.env.NODE_ENV === "development"

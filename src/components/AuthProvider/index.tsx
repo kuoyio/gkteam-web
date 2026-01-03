@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useSyncExternalStore } from "react";
+import React, { Suspense, useEffect, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import CookieUtil from "@/src/lib/util/cookie-util";
 import { refreshToken } from "@/src/api/auth";
@@ -14,7 +14,7 @@ const isPublicRoute = (pathname: string) =>
 
 const emptySubscribe = () => () => {};
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+const AuthProviderInner = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -80,5 +80,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return <>{children}</>;
 };
+
+const AuthProvider = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={null}>
+    <AuthProviderInner>{children}</AuthProviderInner>
+  </Suspense>
+);
 
 export default AuthProvider;

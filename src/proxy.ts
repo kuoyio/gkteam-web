@@ -28,7 +28,7 @@ interface ApiResponse<T = unknown> {
 async function fetchWithTimeout(
   url: string,
   options: RequestInit,
-  timeout: number
+  timeout: number,
 ): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -39,7 +39,9 @@ async function fetchWithTimeout(
   }
 }
 
-async function refreshTokens(refreshToken: string): Promise<TokenResponse | null> {
+async function refreshTokens(
+  refreshToken: string,
+): Promise<TokenResponse | null> {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
       method: "POST",
@@ -47,7 +49,9 @@ async function refreshTokens(refreshToken: string): Promise<TokenResponse | null
       body: JSON.stringify({ refreshToken, device: "WEB" }),
     });
     const result: ApiResponse<TokenResponse> = await response.json();
-    return result.data?.accessToken && result.data?.refreshToken ? result.data : null;
+    return result.data?.accessToken && result.data?.refreshToken
+      ? result.data
+      : null;
   } catch {
     return null;
   }
@@ -67,8 +71,16 @@ function setTokenCookies(res: NextResponse, tokens: TokenResponse) {
 }
 
 function clearTokenCookies(res: NextResponse) {
-  res.cookies.set("accessToken", "", { ...COOKIE_BASE, httpOnly: false, maxAge: 0 });
-  res.cookies.set("refreshToken", "", { ...COOKIE_BASE, httpOnly: true, maxAge: 0 });
+  res.cookies.set("accessToken", "", {
+    ...COOKIE_BASE,
+    httpOnly: false,
+    maxAge: 0,
+  });
+  res.cookies.set("refreshToken", "", {
+    ...COOKIE_BASE,
+    httpOnly: true,
+    maxAge: 0,
+  });
 }
 
 async function handleLogin(request: NextRequest): Promise<NextResponse> {
@@ -96,7 +108,7 @@ async function handleLogin(request: NextRequest): Promise<NextResponse> {
   } catch {
     return NextResponse.json(
       { code: "500", message: "服务暂时不可用，请稍后再试" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -158,7 +170,9 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
   if (accessToken) headers["Authorization"] = `Bearer ${accessToken}`;
 
   const clientIp =
@@ -177,7 +191,7 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
     let response = await fetchWithTimeout(
       targetUrl,
       { method: request.method, headers, body, cache: "no-store" },
-      TIMEOUT_MS
+      TIMEOUT_MS,
     );
     let data: ApiResponse = await response.json();
 
@@ -189,7 +203,7 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
         response = await fetchWithTimeout(
           targetUrl,
           { method: request.method, headers, body, cache: "no-store" },
-          TIMEOUT_MS
+          TIMEOUT_MS,
         );
         data = await response.json();
 
@@ -218,12 +232,12 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
     if (error instanceof Error && error.name === "AbortError") {
       return NextResponse.json(
         { code: "504", message: "请求超时，请稍后重试" },
-        { status: 504 }
+        { status: 504 },
       );
     }
     return NextResponse.json(
       { code: "502", message: "服务暂时不可用，请稍后再试" },
-      { status: 502 }
+      { status: 502 },
     );
   }
 }
@@ -238,7 +252,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   if (!API_BASE_URL) {
     return NextResponse.json(
       { code: "500", message: "服务配置错误" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -256,9 +270,5 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
   return handleApiProxy(request);
 }
-
-export const config = {
-  matcher: "/api/:path*",
-};
 
 export default proxy;

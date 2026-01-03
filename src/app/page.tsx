@@ -2,10 +2,11 @@
 
 import { Button, Typography } from "antd";
 import TextEasterEgg from "@/src/components/TextEasterEgg";
-import Link from "next/link";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Shrikhand } from "next/font/google";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import CookieUtil from "@/src/lib/util/cookie-util";
 
 const shrikhand = Shrikhand({
   weight: "400",
@@ -16,6 +17,17 @@ const shrikhand = Shrikhand({
 const { Text } = Typography;
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleExplore = () => {
+    const isLoggedIn = CookieUtil.isLoggedIn();
+    if (isLoggedIn) {
+      router.push("/note/169332126339173300");
+    } else {
+      router.push("/login");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-ant-blue-100 rounded-full blur-[120px] opacity-40 animate-pulse" />
@@ -54,15 +66,14 @@ export default function Home() {
           </div>
 
           <div className="w-full pt-4">
-            <Link href="/note/169332126339173300" className="block w-full">
-              <Button
-                type="primary"
-                size="large"
-                className="w-full h-16 rounded-2xl text-lg font-bold bg-ant-blue-500 hover:bg-ant-blue-600 border-none shadow-[0_12px_24px_-8px_rgba(22,119,255,0.4)] hover:shadow-[0_16px_32px_-8px_rgba(22,119,255,0.5)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3"
-              >
-                开始探索 <ArrowRightOutlined />
-              </Button>
-            </Link>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleExplore}
+              className="w-full h-16 rounded-2xl text-lg font-bold bg-ant-blue-500 hover:bg-ant-blue-600 border-none shadow-[0_12px_24px_-8px_rgba(22,119,255,0.4)] hover:shadow-[0_16px_32px_-8px_rgba(22,119,255,0.5)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3"
+            >
+              开始探索 <ArrowRightOutlined />
+            </Button>
           </div>
         </div>
 

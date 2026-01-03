@@ -26,12 +26,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const hasToken = CookieUtil.isLoggedIn();
 
     if (!hasToken && !isPublicRoute(pathname)) {
-      router.replace("/login");
+      const redirectUrl = `/login?redirect=${encodeURIComponent(pathname)}`;
+      router.replace(redirectUrl);
       return;
     }
 
     if (hasToken && pathname === "/login") {
-      router.replace("/");
+      router.replace("/user/profile");
     }
   }, [mounted, pathname, router]);
 

@@ -43,7 +43,10 @@ class HttpClient {
       const data: Response<T> = await res.json();
 
       if (data.code === REFRESH_TOKEN_EXPIRED) {
-        if (typeof window !== "undefined") window.location.href = "/login";
+        if (typeof window !== "undefined") {
+          const currentPath = window.location.pathname;
+          window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
+        }
         throw new Error("登录已过期，请重新登录");
       }
 

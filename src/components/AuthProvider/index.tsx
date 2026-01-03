@@ -1,42 +1,63 @@
 "use client";
 
-import React, { useEffect, useSyncExternalStore } from "react";
+import React, { useEffect, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import CookieUtil from "@/src/lib/util/cookie-util";
+import { refreshToken } from "@/src/api/auth";
 
-const PUBLIC_ROUTES = ["/", "/login", "/site/privacy", "/site/terms", "/site/changelog"];
+const PUBLIC_ROUTES = [
+  "/",
+  "/login",
+  "/site/privacy",
+  "/site/terms",
+  "/site/changelog",
+];
 
 const isPublicRoute = (pathname: string) =>
-  PUBLIC_ROUTES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
+  PUBLIC_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
 
 const emptySubscribe = () => () => {};
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const [isChecking, setIsChecking] = useState(true);
   const mounted = useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
 
   useEffect(() => {
     if (!mounted) return;
 
-    const hasToken = CookieUtil.isLoggedIn();
+    const checkAuth = async () => {
+      if (isPublicRoute(pathname)) {
+        setIsChecking(false);
+        return;
+      }
 
-    if (!hasToken && !isPublicRoute(pathname)) {
-      const redirectUrl = `/login?redirect=${encodeURIComponent(pathname)}`;
-      router.replace(redirectUrl);
-      return;
-    }
+      if (CookieUtil.isLoggedIn()) {
+        if (pathname === "/login") {
+          router.replace("/user/profile");
+          return;
+        }
+        setIsChecking(false);
+        return;
+      }
 
-    if (hasToken && pathname === "/login") {
-      router.replace("/user/profile");
-    }
+      try {
+        await refreshToken();
+        setIsChecking(false);
+      } catch {}
+    };
+
+    checkAuth();
   }, [mounted, pathname, router]);
 
-  if (!mounted) return null;
+  if (!mounted || isChecking) return null;
 
   return <>{children}</>;
 };

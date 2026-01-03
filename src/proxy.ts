@@ -121,6 +121,36 @@ async function handleLogout(request: NextRequest): Promise<NextResponse> {
   return res;
 }
 
+async function handleRefresh(request: NextRequest): Promise<NextResponse> {
+  const refreshToken = request.cookies.get("refreshToken")?.value;
+
+  if (!refreshToken) {
+    const res = NextResponse.json({
+      code: REFRESH_TOKEN_EXPIRED_CODE,
+      message: "登录已过期，请重新登录",
+      data: null,
+    });
+    clearTokenCookies(res);
+    return res;
+  }
+
+  const newTokens = await refreshTokens(refreshToken);
+
+  if (newTokens) {
+    const res = NextResponse.json({ code: null, message: null, data: null });
+    setTokenCookies(res, newTokens);
+    return res;
+  }
+
+  const res = NextResponse.json({
+    code: REFRESH_TOKEN_EXPIRED_CODE,
+    message: "登录已过期，请重新登录",
+    data: null,
+  });
+  clearTokenCookies(res);
+  return res;
+}
+
 async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
   const { pathname, search } = request.nextUrl;
   const targetUrl = `${API_BASE_URL}${pathname.replace(/^\/api/, "")}${search}`;
@@ -218,6 +248,10 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
   if (pathname === "/api/auth/logout" && request.method === "POST") {
     return handleLogout(request);
+  }
+
+  if (pathname === "/api/auth/refresh" && request.method === "POST") {
+    return handleRefresh(request);
   }
 
   return handleApiProxy(request);

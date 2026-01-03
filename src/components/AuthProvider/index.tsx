@@ -1,73 +1,43 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useSyncExternalStore } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Provider } from "react-redux";
-import { store } from "@/src/store";
-import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-import LocalStorageUtil from "@/src/lib/util/localstorage-util";
-import { getUserProfile } from "@/src/api/user";
-import { setUserProfile } from "@/src/store/slices/userSlice";
-import { message } from "antd";
+import CookieUtil from "@/src/lib/util/cookie-util";
 
-const PUBLIC_ROUTES = [
-  "/",
-  "/login",
-  "/site/privacy",
-  "/site/terms",
-  "/site/changelog",
-];
+const PUBLIC_ROUTES = ["/", "/login", "/site/privacy", "/site/terms", "/site/changelog"];
 
-const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const token =
-    typeof window !== "undefined" ? LocalStorageUtil.get("token") : null;
-  const { userProfile } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
+const isPublicRoute = (pathname: string) =>
+  PUBLIC_ROUTES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const user = await getUserProfile();
-        dispatch(setUserProfile(user));
-      } catch (e) {
-        message.error((e as Error).message);
-        router.replace("/login");
-      }
-    };
-
-    const initialize = async () => {
-      const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
-
-      if (!token) {
-        if (isPublicRoute) return;
-        router.replace("/login");
-        return;
-      }
-
-      if (pathname === "/login") {
-        router.replace("/");
-        return;
-      }
-
-      if (!userProfile) {
-        await fetchUserProfile();
-      }
-    };
-
-    initialize();
-  }, [dispatch, pathname, router, token, userProfile]);
-
-  return <>{children}</>;
-};
+const emptySubscribe = () => () => {};
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <Provider store={store}>
-      <AuthGuard>{children}</AuthGuard>
-    </Provider>
+  const router = useRouter();
+  const pathname = usePathname();
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
   );
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const hasToken = CookieUtil.isLoggedIn();
+
+    if (!hasToken && !isPublicRoute(pathname)) {
+      router.replace("/login");
+      return;
+    }
+
+    if (hasToken && pathname === "/login") {
+      router.replace("/");
+    }
+  }, [mounted, pathname, router]);
+
+  if (!mounted) return null;
+
+  return <>{children}</>;
 };
 
 export default AuthProvider;

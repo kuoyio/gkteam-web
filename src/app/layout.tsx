@@ -3,6 +3,7 @@ import "./globals.css";
 import "@/src/assets/scss/antd.scss";
 import AntdProvider from "@/src/components/AntdProvider";
 import AuthProvider from "@/src/components/AuthProvider";
+import StoreProvider from "@/src/components/StoreProvider";
 import Loading from "@/src/components/Loading";
 import React from "react";
 
@@ -19,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="zh">
       <body>
-        <AuthProvider>
-          <AntdProvider>
-            {children}
-            <Loading />
-          </AntdProvider>
-        </AuthProvider>
+        <StoreProvider>
+          <AuthProvider>
+            <AntdProvider>
+              {children}
+              <Loading />
+            </AntdProvider>
+          </AuthProvider>
+        </StoreProvider>
       </body>
     </html>
   );

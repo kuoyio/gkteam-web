@@ -2,8 +2,8 @@ import { HttpMethod, Response } from "@/src/type/common";
 
 interface RequestOptions {
   headers?: Record<string, string>;
-  params?: Record<string, any>;
-  body?: any;
+  params?: Record<string, string | number | boolean>;
+  body?: unknown;
   revalidate?: number | false;
 }
 
@@ -27,9 +27,14 @@ const getBaseUrl = () => {
 const DEFAULT_ERROR_MESSAGE = "服务暂时不可用，请稍后再试";
 
 class SSGClient {
-  private static buildUrl(url: string, params?: Record<string, any>) {
+  private static buildUrl(
+    url: string,
+    params?: Record<string, string | number | boolean>
+  ) {
     if (!params) return url;
-    const query = new URLSearchParams(params).toString();
+    const query = new URLSearchParams(
+      Object.entries(params).map(([k, v]) => [k, String(v)])
+    ).toString();
     return `${url}?${query}`;
   }
 
@@ -84,11 +89,11 @@ class SSGClient {
     return this.request<T>("GET", url, options);
   }
 
-  static post<T>(url: string, body?: any, options?: RequestOptions) {
+  static post<T>(url: string, body?: unknown, options?: RequestOptions) {
     return this.request<T>("POST", url, { ...options, body });
   }
 
-  static put<T>(url: string, body?: any, options?: RequestOptions) {
+  static put<T>(url: string, body?: unknown, options?: RequestOptions) {
     return this.request<T>("PUT", url, { ...options, body });
   }
 

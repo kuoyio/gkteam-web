@@ -3,14 +3,14 @@
 import { Avatar, Space, Typography, message } from "antd";
 import { EditOutlined, CopyOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useAppSelector } from "@/src/store/hooks";
+import { useUserProfile } from "../context/UserProfileContext";
 import UpdateUserProfileModal from "./components/UpdateUserProfileModal";
 import UpdateUserEmailModal from "./components/UpdateUserEmailModal";
 
 const { Title } = Typography;
 
 export default function ProfilePage() {
-  const { userProfile } = useAppSelector((state) => state.user);
+  const { userProfile } = useUserProfile();
   const [openUpdateUserProfileModal, setOpenUpdateUserProfileModal] =
     useState(false);
   const [openUpdateUserEmailModal, setOpenUpdateUserEmailModal] =

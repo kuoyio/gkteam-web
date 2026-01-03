@@ -4,35 +4,26 @@ import { Button, Drawer, Menu } from "antd";
 import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { MenuOutlined } from "@ant-design/icons";
-import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { logout } from "@/src/api";
-import { clearUserProfile } from "@/src/store/slices/userSlice";
-import LocalStorageUtil from "@/src/lib/util/localstorage-util";
+import CookieUtil from "@/src/lib/util/cookie-util";
 import { SiteNavBarItems } from "./SiteNavBar";
 import { UserNavBarItems, LoginNavBarItems } from "./UserNavBar";
 
 const DrawerNavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { userProfile } = useAppSelector((state) => state.user);
   const [drawerVisible, setDrawerVisible] = useState(false);
-
-  const selectedKey = useMemo(() => {
-    return pathname;
-  }, [pathname]);
+  const isLoggedIn = typeof window !== "undefined" && CookieUtil.isLoggedIn();
 
   const navItems = useMemo(() => {
-    const userItems = userProfile ? UserNavBarItems : LoginNavBarItems;
+    const userItems = isLoggedIn ? UserNavBarItems : LoginNavBarItems;
     return [...SiteNavBarItems, ...userItems];
-  }, [userProfile]);
+  }, [isLoggedIn]);
 
   const handleClickNavBarItem = useCallback(
     async ({ key }: { key: string }) => {
       if (key === "/logout") {
         await logout();
-        dispatch(clearUserProfile());
-        LocalStorageUtil.remove("token");
         router.push("/login");
         setDrawerVisible(false);
         return;
@@ -40,7 +31,7 @@ const DrawerNavBar = () => {
       setDrawerVisible(false);
       router.push(key);
     },
-    [router, dispatch],
+    [router]
   );
 
   return (
@@ -63,7 +54,7 @@ const DrawerNavBar = () => {
       >
         <Menu
           mode="inline"
-          selectedKeys={[selectedKey]}
+          selectedKeys={[pathname]}
           items={navItems}
           onClick={handleClickNavBarItem}
           theme="light"
@@ -75,4 +66,3 @@ const DrawerNavBar = () => {
 };
 
 export default DrawerNavBar;
-

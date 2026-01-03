@@ -4,8 +4,7 @@ import { Modal, Form, Input, Button, message } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { updateUserEmail } from "@/src/api/user";
 import { sendOtp } from "@/src/api/email";
-import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-import { setUserProfile } from "@/src/store/slices/userSlice";
+import { useUserProfile } from "../../context/UserProfileContext";
 import { UpdateUserEmailRequest } from "@/src/type/user";
 import { OtpType } from "@/src/type/email";
 
@@ -19,8 +18,7 @@ export default function UpdateUserEmailModal({
   onCancel,
 }: UpdateUserEmailModalProps) {
   const [form] = Form.useForm();
-  const dispatch = useAppDispatch();
-  const { userProfile } = useAppSelector((state) => state.user);
+  const { userProfile, setUserProfile } = useUserProfile();
   const [countdown, setCountdown] = useState(0);
   const [isSending, setIsSending] = useState(false);
 
@@ -67,11 +65,12 @@ export default function UpdateUserEmailModal({
       await sendOtp(email, OtpType.UPDATE_EMAIL);
       message.success("验证码已发送到新邮箱");
       setCountdown(60);
-    } catch (error: any) {
-      if (error.errorFields) {
+    } catch (error: unknown) {
+      const err = error as { errorFields?: unknown; message?: string };
+      if (err.errorFields) {
         return;
       }
-      message.error(error.message || "发送验证码失败");
+      message.error(err.message || "发送验证码失败");
     } finally {
       setIsSending(false);
     }
@@ -80,7 +79,7 @@ export default function UpdateUserEmailModal({
   const handleFinish = async (values: UpdateUserEmailRequest) => {
     try {
       const response = await updateUserEmail(values);
-      dispatch(setUserProfile(response));
+      setUserProfile(response);
       message.success("邮箱修改成功");
       form.resetFields();
       setCountdown(0);

@@ -1,14 +1,7 @@
 import HttpClient from "@/src/lib/http-client";
 import { LoginRequest } from "@/src/type";
 
-export const login = async (loginRequest: LoginRequest) => {
-  return await HttpClient.post<string>("/auth/login", loginRequest, {
-    isNeedToken: false,
-  });
-};
+export const login = (loginRequest: LoginRequest) =>
+  HttpClient.post<null>("/auth/login", loginRequest);
 
-export const logout = async () => {
-  return await HttpClient.post<string>("/auth/logout", null, {
-    isNeedToken: true,
-  });
-};
+export const logout = () => HttpClient.post<null>("/auth/logout");

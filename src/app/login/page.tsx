@@ -1,16 +1,8 @@
 "use client";
 import LoginForm from "@/src/app/login/components/LoginForm";
 import Logo from "@/src/components/Logo";
-import { useEffect } from "react";
-import { clearUserProfile } from "@/src/store/slices/userSlice";
-import LocalStorageUtil from "@/src/lib/util/localstorage-util";
 
 export default function LoginPage() {
-  useEffect(() => {
-    LocalStorageUtil.remove("token");
-    clearUserProfile();
-  }, []);
-
   return (
     <>
       <div className="min-h-screen flex items-center justify-center px-4 bg-ant-blue-50/20">

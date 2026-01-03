@@ -1,108 +1,79 @@
 import { HttpMethod, Response } from "@/src/type/common";
-import LocalStorageUtil from "@/src/lib/util/localstorage-util";
 import { store } from "@/src/store";
-import {
-  incrementLoading,
-  decrementLoading,
-} from "@/src/store/slices/loadingSlice";
+import { incrementLoading, decrementLoading } from "@/src/store/slices/loadingSlice";
 
-interface RequestOptions {
-  headers?: Record<string, string>;
-  params?: Record<string, any>;
-  body?: any;
-  isNeedToken?: boolean;
-}
+type RequestParams = Record<string, unknown>;
 
 const BASE_URL = "/api";
-
-const DEFAULT_ERROR_MESSAGE = "服务暂时不可用，请稍后再试";
+const DEFAULT_ERROR = "服务暂时不可用，请稍后再试";
+const REFRESH_TOKEN_EXPIRED = "A0201";
 
 class HttpClient {
-  private static buildUrl(url: string, params?: Record<string, any>) {
+  private static buildUrl(url: string, params?: RequestParams): string {
     if (!params) return url;
-    const query = new URLSearchParams(params).toString();
-    return `${url}?${query}`;
+    const query = new URLSearchParams(
+      Object.entries(params).reduce(
+        (acc, [key, value]) => {
+          if (value != null) acc[key] = String(value);
+          return acc;
+        },
+        {} as Record<string, string>
+      )
+    ).toString();
+    return query ? `${url}?${query}` : url;
   }
 
   private static async request<T>(
     method: HttpMethod,
     url: string,
-    options: RequestOptions = {},
+    body?: unknown,
+    params?: RequestParams
   ): Promise<T> {
-    const { headers = {}, params, body, isNeedToken = true } = options;
-
     store.dispatch(incrementLoading());
 
     try {
-      let authToken: string | null = null;
-      if (isNeedToken && typeof window !== "undefined") {
-        authToken = LocalStorageUtil.get("token");
-        if (!authToken) {
-          window.location.href = "/login";
-          throw new Error("未登录，请先登录");
-        }
+      const fullUrl = `${BASE_URL}/${this.buildUrl(url.replace(/^\/+/, ""), params)}`;
+      const res = await fetch(fullUrl, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: body ? JSON.stringify(body) : undefined,
+        credentials: "include",
+      });
+
+      const data: Response<T> = await res.json();
+
+      if (data.code === REFRESH_TOKEN_EXPIRED) {
+        if (typeof window !== "undefined") window.location.href = "/login";
+        throw new Error("登录已过期，请重新登录");
       }
 
-      const cleanBase = BASE_URL?.replace(/\/+$/, "") ?? "";
-      const cleanUrl = url.replace(/^\/+/, "");
-      const fullUrl = `${cleanBase}/${this.buildUrl(cleanUrl, params)}`;
-
-      let res: Response<T> | undefined;
-
-      try {
-        const fetchRes = await fetch(fullUrl, {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
-            ...headers,
-          },
-          ...(body ? { body: JSON.stringify(body) } : {}),
-          cache: "no-store",
-        });
-
-        if (fetchRes.status === 401 && typeof window !== "undefined") {
-          window.location.href = "/login";
-          throw new Error("登录已过期，请重新登录");
-        }
-
-        try {
-          res = await fetchRes.json();
-        } catch {
-          throw new Error(DEFAULT_ERROR_MESSAGE);
-        }
-      } catch {
-        throw new Error(DEFAULT_ERROR_MESSAGE);
+      if (data.code) {
+        throw new Error(data.message || DEFAULT_ERROR);
       }
 
-      if (!res || typeof res !== "object") {
-        throw new Error(DEFAULT_ERROR_MESSAGE);
-      }
-
-      if (res.code) {
-        throw new Error(res.message || DEFAULT_ERROR_MESSAGE);
-      }
-
-      return res.data as T;
+      return data.data as T;
+    } catch (e) {
+      if (e instanceof Error && e.message !== DEFAULT_ERROR) throw e;
+      throw new Error(DEFAULT_ERROR);
     } finally {
       store.dispatch(decrementLoading());
     }
   }
 
-  static get<T>(url: string, options?: RequestOptions) {
-    return this.request<T>("GET", url, options);
+  static get<T>(url: string, params?: RequestParams) {
+    return this.request<T>("GET", url, undefined, params);
   }
 
-  static post<T>(url: string, body?: any, options?: RequestOptions) {
-    return this.request<T>("POST", url, { ...options, body });
+  static post<T>(url: string, body?: unknown, params?: RequestParams) {
+    return this.request<T>("POST", url, body, params);
   }
 
-  static put<T>(url: string, body?: any, options?: RequestOptions) {
-    return this.request<T>("PUT", url, { ...options, body });
+  static put<T>(url: string, body?: unknown, params?: RequestParams) {
+    return this.request<T>("PUT", url, body, params);
   }
 
-  static delete<T>(url: string, options?: RequestOptions) {
-    return this.request<T>("DELETE", url, options);
+  static delete<T>(url: string, params?: RequestParams) {
+    return this.request<T>("DELETE", url, undefined, params);
   }
 }
 

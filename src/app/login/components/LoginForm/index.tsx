@@ -8,7 +8,6 @@ import Link from "next/link";
 import { sendOtp } from "@/src/api/email";
 import { OtpType } from "@/src/type/email";
 import { login } from "@/src/api";
-import LocalStorageUtil from "@/src/lib/util/localstorage-util";
 
 const LoginForm = () => {
   const [form] = Form.useForm();
@@ -55,9 +54,7 @@ const LoginForm = () => {
     const otp = form.getFieldValue("otp");
     try {
       setLoading(true);
-      const token = await login({ email, otp });
-
-      LocalStorageUtil.set("token", token);
+      await login({ email, otp });
 
       message.success("登录成功");
       router.push("/");

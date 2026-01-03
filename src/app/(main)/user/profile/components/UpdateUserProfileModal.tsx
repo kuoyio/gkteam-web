@@ -3,8 +3,7 @@
 import { Modal, Form, Input, message } from "antd";
 import { useEffect, useMemo } from "react";
 import { updateUserProfile } from "@/src/api/user";
-import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-import { setUserProfile } from "@/src/store/slices/userSlice";
+import { useUserProfile } from "../../context/UserProfileContext";
 import { UpdateUserProfileRequest } from "@/src/type/user";
 
 interface UpdateUserModalProps {
@@ -17,8 +16,7 @@ export default function UpdateUserProfileModal({
   onCancel,
 }: UpdateUserModalProps) {
   const [form] = Form.useForm();
-  const dispatch = useAppDispatch();
-  const { userProfile } = useAppSelector((state) => state.user);
+  const { userProfile, setUserProfile } = useUserProfile();
   const nameValue = Form.useWatch("name", form);
 
   useEffect(() => {
@@ -39,7 +37,7 @@ export default function UpdateUserProfileModal({
   const handleFinish = async (values: UpdateUserProfileRequest) => {
     try {
       const response = await updateUserProfile(values);
-      dispatch(setUserProfile(response));
+      setUserProfile(response);
       message.success("用户资料更新成功");
       form.resetFields();
       onCancel();

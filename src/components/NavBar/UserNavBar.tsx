@@ -9,10 +9,8 @@ import {
   ProfileOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { logout } from "@/src/api";
-import { clearUserProfile } from "@/src/store/slices/userSlice";
-import LocalStorageUtil from "@/src/lib/util/localstorage-util";
+import CookieUtil from "@/src/lib/util/cookie-util";
 
 export const UserNavBarItems = [
   {
@@ -37,36 +35,29 @@ export const LoginNavBarItems = [
 const UserNavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { userProfile } = useAppSelector((state) => state.user);
-
-  const selectedKey = useMemo(() => {
-    return pathname;
-  }, [pathname]);
+  const isLoggedIn = typeof window !== "undefined" && CookieUtil.isLoggedIn();
 
   const navItems = useMemo(() => {
-    return userProfile ? UserNavBarItems : LoginNavBarItems;
-  }, [userProfile]);
+    return isLoggedIn ? UserNavBarItems : LoginNavBarItems;
+  }, [isLoggedIn]);
 
   const handleClickNavBarItem = useCallback(
     async ({ key }: { key: string }) => {
       if (key === "/logout") {
         await logout();
-        dispatch(clearUserProfile());
-        LocalStorageUtil.remove("token");
         router.push("/login");
         return;
       }
       router.push(key);
     },
-    [router, dispatch],
+    [router]
   );
 
   return (
     <nav>
       <Menu
         mode="horizontal"
-        selectedKeys={[selectedKey]}
+        selectedKeys={[pathname]}
         items={navItems}
         onClick={handleClickNavBarItem}
         theme="light"

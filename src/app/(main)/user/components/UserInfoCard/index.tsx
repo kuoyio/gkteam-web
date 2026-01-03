@@ -2,10 +2,10 @@
 
 import { Avatar, Card, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
-import { useAppSelector } from "@/src/store/hooks";
+import { useUserProfile } from "../../context/UserProfileContext";
 
 export default function UserInfoCard() {
-  const { userProfile } = useAppSelector((state) => state.user);
+  const { userProfile } = useUserProfile();
 
   const handleCopyId = () => {
     if (userProfile?.id) {
@@ -37,4 +37,3 @@ export default function UserInfoCard() {
     </Card>
   );
 }
-

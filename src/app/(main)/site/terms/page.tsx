@@ -16,7 +16,7 @@ export default function TermsPage() {
       <p className="text-sm text-ant-grey-500 mb-6">更新日期：{updatedAt}</p>
 
       <p className="mb-4 text-ant-grey-700 leading-relaxed">
-        欢迎您使用"公考小分队"（以下简称"本网站"或"我们"）提供的服务。本《服务协议》（以下简称"本协议"）是您与本网站之间就使用本网站及相关服务所订立的法律协议。
+        欢迎您使用「公考小分队」（以下简称「本网站」或「我们」）提供的服务。本《服务协议》（以下简称「本协议」）是您与本网站之间就使用本网站及相关服务所订立的法律协议。
       </p>
       <p className="mb-6 text-ant-grey-700 leading-relaxed">
         在使用本网站及相关服务前，请您务必仔细阅读、充分理解并同意本协议的全部内容。一旦您访问、注册、登录或使用本网站的任何服务，即视为您已阅读并同意接受本协议的全部条款约束。

@@ -1,11 +1,22 @@
 "use client";
 
-import React, { Suspense, useEffect, useState, useSyncExternalStore } from "react";
+import React, {
+  Suspense,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import CookieUtil from "@/src/lib/util/cookie-util";
 import { refreshToken } from "@/src/api/auth";
 
-const PUBLIC_ROUTES = ["/", "/site/privacy", "/site/terms", "/site/changelog"];
+const PUBLIC_ROUTES = [
+  "/",
+  "/register",
+  "/site/privacy",
+  "/site/terms",
+  "/site/changelog",
+];
 
 const isPublicRoute = (pathname: string) =>
   PUBLIC_ROUTES.some(

@@ -4,6 +4,7 @@ import {
   UpdateUserProfileRequest,
   UserProfileResponse,
 } from "@/src/type/user";
+import { ForgotPasswordRequest, RegisterRequest } from "@/src/type/auth";
 
 export const getUserProfile = async () => {
   return await HttpClient.get<UserProfileResponse>("/users/profile");
@@ -24,5 +25,18 @@ export const updateUserEmail = async (
   return await HttpClient.put<UserProfileResponse>(
     "/users/email",
     updateUserEmailRequest,
+  );
+};
+
+export const register = async (registerRequest: RegisterRequest) => {
+  return await HttpClient.post<null>("/users/register", registerRequest);
+};
+
+export const forgotPassword = async (
+  forgotPasswordRequest: ForgotPasswordRequest,
+) => {
+  return await HttpClient.post<null>(
+    "/users/forgot-password",
+    forgotPasswordRequest,
   );
 };

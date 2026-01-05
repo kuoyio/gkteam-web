@@ -1,8 +1,8 @@
 import HttpClient from "@/src/lib/http-client";
-import { LoginRequest } from "@/src/type";
+import { LoginRequest, TokenResponse } from "@/src/type";
 
 export const login = (loginRequest: LoginRequest) =>
-  HttpClient.post<null>("/auth/login", loginRequest);
+  HttpClient.post<TokenResponse>("/auth/login", loginRequest);
 
 export const logout = () => HttpClient.post<null>("/auth/logout");
 

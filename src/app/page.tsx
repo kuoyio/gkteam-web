@@ -1,7 +1,6 @@
 "use client";
 
 import { Layout } from "antd";
-import { useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection";
 import VisualSection from "../components/VisualSection";
 import TextEasterEgg from "@/src/components/TextEasterEgg";
@@ -10,14 +9,6 @@ import Link from "next/link";
 const { Content } = Layout;
 
 export default function Home() {
-  const [count, setCount] = useState(2179);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCount((prev) => prev + Math.floor(Math.random() * 2));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <Layout className="h-screen bg-white overflow-hidden">
@@ -30,7 +21,7 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16 py-8">
             <HeroSection />
             <div className="hidden lg:block flex-1">
-              <VisualSection communityCount={count} />
+              <VisualSection />
             </div>
           </div>
         </div>

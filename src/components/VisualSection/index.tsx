@@ -3,16 +3,11 @@ import {
   ThunderboltOutlined,
   EditOutlined,
   MessageOutlined,
-  TeamOutlined,
 } from "@ant-design/icons";
 import FeatureCard from "../FeatureCard";
 import styles from "../../app/styles.module.scss";
 
-interface VisualSectionProps {
-  communityCount: number;
-}
-
-const VisualSection = ({ communityCount }: VisualSectionProps) => {
+const VisualSection = () => {
   return (
     <div className="flex-1 relative w-full max-w-[600px] aspect-square lg:max-w-none">
       <div className="relative w-full h-full flex items-center justify-center">
@@ -34,7 +29,7 @@ const VisualSection = ({ communityCount }: VisualSectionProps) => {
           subtitle="从看题就困😴 到露头就秒💥"
           iconBgColor="bg-orange-100"
           iconTextColor="text-orange-500"
-          position="top-[5%] left-[0%]"
+          position="top-[-2%] left-[calc(50%-115px)]"
           animationClass="floatDelayed"
         />
 
@@ -44,7 +39,7 @@ const VisualSection = ({ communityCount }: VisualSectionProps) => {
           subtitle="从憋不出字😫 到下笔如神🖋️"
           iconBgColor="bg-blue-100"
           iconTextColor="text-blue-500"
-          position="top-[15%] right-[-5%]"
+          position="bottom-[15%] right-[-5%]"
           animationClass="float"
         />
 
@@ -54,18 +49,8 @@ const VisualSection = ({ communityCount }: VisualSectionProps) => {
           subtitle="从张口结舌😶 到侃侃而谈🎤"
           iconBgColor="bg-purple-100"
           iconTextColor="text-purple-500"
-          position="bottom-[20%] left-[-5%]"
+          position="bottom-[15%] left-[-5%]"
           animationClass="floatDelayed"
-        />
-
-        <FeatureCard
-          icon={<TeamOutlined />}
-          title="社区人数"
-          subtitle={`已有 ${communityCount.toLocaleString()} 人加入社区`}
-          iconBgColor="bg-green-100"
-          iconTextColor="text-green-500"
-          position="bottom-[10%] right-[0%]"
-          animationClass="float"
         />
 
         <div

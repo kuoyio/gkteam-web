@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { MenuOutlined } from "@ant-design/icons";
 import { logout } from "@/src/api";
-import CookieUtil from "@/src/lib/util/cookie-util";
+import { useAuth } from "@/src/components/AuthProvider";
 import { SiteNavBarItems } from "./SiteNavBar";
 import { UserNavBarItems, LoginNavBarItems } from "./UserNavBar";
 
@@ -13,11 +13,11 @@ const DrawerNavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const isLoggedIn = typeof window !== "undefined" && CookieUtil.isLoggedIn();
+  const { isLoggedIn } = useAuth();
 
   const navItems = useMemo(() => {
     const userItems = isLoggedIn ? UserNavBarItems : LoginNavBarItems;
-    return [...SiteNavBarItems, ...userItems];
+    return isLoggedIn ? [...SiteNavBarItems, ...userItems] : userItems;
   }, [isLoggedIn]);
 
   const handleClickNavBarItem = useCallback(
@@ -31,7 +31,7 @@ const DrawerNavBar = () => {
       setDrawerVisible(false);
       router.push(key);
     },
-    [router]
+    [router],
   );
 
   return (

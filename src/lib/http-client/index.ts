@@ -1,13 +1,15 @@
 import { HttpMethod, Response } from "@/src/type/common";
 import { store } from "@/src/store";
-import { incrementLoading, decrementLoading } from "@/src/store/slices/loadingSlice";
+import {
+  incrementLoading,
+  decrementLoading,
+} from "@/src/store/slices/loadingSlice";
+import { REQUIRE_RELOGIN_CODES } from "@/src/lib/constants/auth";
 
 type RequestParams = Record<string, unknown>;
 
 const BASE_URL = "/api";
 const DEFAULT_ERROR = "服务暂时不可用，请稍后再试";
-const REFRESH_TOKEN_EXPIRED = "A0201";
-const REFRESH_TOKEN_INVALID = "A0202";
 
 class HttpClient {
   private static buildUrl(url: string, params?: RequestParams): string {
@@ -50,7 +52,7 @@ class HttpClient {
 
       const data: Response<T> = await res.json();
 
-      if (data.code === REFRESH_TOKEN_EXPIRED || data.code === REFRESH_TOKEN_INVALID) {
+      if (data.code && REQUIRE_RELOGIN_CODES.includes(data.code)) {
         this.redirectToLogin();
         throw new Error("登录已过期，请重新登录");
       }

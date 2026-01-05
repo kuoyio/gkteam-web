@@ -3,9 +3,13 @@
 import { Layout } from "antd";
 import Logo from "@/src/components/Logo";
 import { SiteNavBar, UserNavBar, DrawerNavBar } from "@/src/components/NavBar";
+import { useAuth } from "@/src/components/AuthProvider";
+
 const { Header } = Layout;
 
 const LayoutHeader = () => {
+  const { isLoggedIn } = useAuth();
+
   return (
     <Header
       style={{
@@ -20,7 +24,7 @@ const LayoutHeader = () => {
       <div className="hidden md:flex items-center px-4 sm:px-6 h-full">
         <Logo />
         <div className="flex-1 flex justify-center">
-          <SiteNavBar />
+          {isLoggedIn && <SiteNavBar />}
         </div>
         <UserNavBar />
       </div>

@@ -12,11 +12,6 @@ class CookieUtil {
   static isLoggedIn(): boolean {
     return !!this.get("accessToken");
   }
-
-  static remove(name: string): void {
-    if (typeof document === "undefined") return;
-    document.cookie = `${name}=; path=/; max-age=0`;
-  }
 }
 
 export default CookieUtil;

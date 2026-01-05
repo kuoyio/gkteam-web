@@ -10,7 +10,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { logout } from "@/src/api";
-import CookieUtil from "@/src/lib/util/cookie-util";
+import { useAuth } from "@/src/components/AuthProvider";
 
 export const UserNavBarItems = [
   {
@@ -35,7 +35,7 @@ export const LoginNavBarItems = [
 const UserNavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const isLoggedIn = typeof window !== "undefined" && CookieUtil.isLoggedIn();
+  const { isLoggedIn } = useAuth();
 
   const navItems = useMemo(() => {
     return isLoggedIn ? UserNavBarItems : LoginNavBarItems;

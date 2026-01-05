@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { TokenResponse } from "@/src/type/auth";
+import {
+  AUTH_ERROR_CODES,
+  TOKEN_MAX_AGE,
+  REQUIRE_RELOGIN_CODES,
+} from "@/src/lib/constants/auth";
 
 const API_BASE_URL =
   process.env.NODE_ENV === "development"
@@ -13,11 +18,7 @@ const COOKIE_BASE = {
   path: "/",
 };
 
-const ACCESS_TOKEN_MAX_AGE = 30 * 60;
-const REFRESH_TOKEN_MAX_AGE = 30 * 24 * 60 * 60;
 const TIMEOUT_MS = 15000;
-const TOKEN_EXPIRED_CODE = "A0101";
-const REFRESH_TOKEN_EXPIRED_CODE = "A0201";
 
 interface ApiResponse<T = unknown> {
   code?: string | null;
@@ -61,12 +62,12 @@ function setTokenCookies(res: NextResponse, tokens: TokenResponse) {
   res.cookies.set("accessToken", tokens.accessToken, {
     ...COOKIE_BASE,
     httpOnly: false,
-    maxAge: ACCESS_TOKEN_MAX_AGE,
+    maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
   });
   res.cookies.set("refreshToken", tokens.refreshToken, {
     ...COOKIE_BASE,
     httpOnly: true,
-    maxAge: REFRESH_TOKEN_MAX_AGE,
+    maxAge: TOKEN_MAX_AGE.REFRESH_TOKEN,
   });
 }
 
@@ -81,6 +82,10 @@ function clearTokenCookies(res: NextResponse) {
     httpOnly: true,
     maxAge: 0,
   });
+}
+
+function isRequireRelogin(code: string | null | undefined): boolean {
+  return !!code && REQUIRE_RELOGIN_CODES.includes(code);
 }
 
 async function handleLogin(request: NextRequest): Promise<NextResponse> {
@@ -138,7 +143,7 @@ async function handleRefresh(request: NextRequest): Promise<NextResponse> {
 
   if (!refreshToken) {
     const res = NextResponse.json({
-      code: REFRESH_TOKEN_EXPIRED_CODE,
+      code: AUTH_ERROR_CODES.REFRESH_TOKEN_EXPIRED,
       message: "登录已过期，请重新登录",
       data: null,
     });
@@ -155,7 +160,7 @@ async function handleRefresh(request: NextRequest): Promise<NextResponse> {
   }
 
   const res = NextResponse.json({
-    code: REFRESH_TOKEN_EXPIRED_CODE,
+    code: AUTH_ERROR_CODES.REFRESH_TOKEN_EXPIRED,
     message: "登录已过期，请重新登录",
     data: null,
   });
@@ -195,7 +200,7 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
     );
     let data: ApiResponse = await response.json();
 
-    if (data.code === TOKEN_EXPIRED_CODE && refreshToken) {
+    if (data.code === AUTH_ERROR_CODES.NOT_LOGIN && refreshToken) {
       const newTokens = await refreshTokens(refreshToken);
 
       if (newTokens) {
@@ -213,7 +218,7 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
       }
 
       const res = NextResponse.json({
-        code: REFRESH_TOKEN_EXPIRED_CODE,
+        code: AUTH_ERROR_CODES.REFRESH_TOKEN_EXPIRED,
         message: "登录已过期，请重新登录",
         data: null,
       });
@@ -221,7 +226,7 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
       return res;
     }
 
-    if (data.code === REFRESH_TOKEN_EXPIRED_CODE) {
+    if (isRequireRelogin(data.code)) {
       const res = NextResponse.json(data);
       clearTokenCookies(res);
       return res;

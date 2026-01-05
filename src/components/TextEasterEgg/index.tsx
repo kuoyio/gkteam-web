@@ -7,6 +7,7 @@ const { Text } = Typography;
 
 const TextEasterEgg = () => {
   const easterEggTexts = [
+    "Long-term progress as the method, successful landing as the result.",
     "扬帆起航⛵⛵️，乘风破浪🌊🌊。",
     "岭南处处是春天，广东时时无闲人 - 天才卷",
     "摒弃埋头几夜可达所欲的妄念，在点滴努力中摆脱匮乏与平庸 - 黑白局",
@@ -29,6 +30,7 @@ const TextEasterEgg = () => {
 
       if (newClickCount >= 10) {
         setIsActivated(true);
+        setCurrentIndex(1);
       }
     } else {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % easterEggTexts.length);
@@ -36,7 +38,10 @@ const TextEasterEgg = () => {
   };
 
   return (
-    <Text className="text-center text-ant-grey-500" onClick={handleClick}>
+    <Text
+      className={`text-center cursor-pointer text-[10px] text-ant-grey-500 uppercase tracking-[0.5em] font-medium opacity-30 select-none block`}
+      onClick={handleClick}
+    >
       {easterEggTexts[currentIndex]}
     </Text>
   );

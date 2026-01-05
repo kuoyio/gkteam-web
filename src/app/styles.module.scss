@@ -1,0 +1,42 @@
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes floatDelayed {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animateFloat {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animateFloatDelayed {
+  animation: floatDelayed 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animateSpinSlow {
+  animation: spinSlow 20s linear infinite;
+}
+

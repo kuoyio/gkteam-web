@@ -16,7 +16,7 @@ const AntdProvider = ({ children }: AntdProviderProps) => {
         locale={zhCN}
         theme={{
           token: {
-            fontFamily: "'Maple Mono', monospace",
+            fontFamily: "'Noto Sans SC', monospace",
           },
         }}
       >

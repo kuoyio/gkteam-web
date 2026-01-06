@@ -1,6 +1,6 @@
 import HttpClient from "@/src/lib/http-client";
 import {
-  UpdateUserEmailRequest,
+  ResetPasswordRequest,
   UpdateUserProfileRequest,
   UserProfileResponse,
 } from "@/src/type/user";
@@ -19,13 +19,10 @@ export const updateUserProfile = async (
   );
 };
 
-export const updateUserEmail = async (
-  updateUserEmailRequest: UpdateUserEmailRequest,
+export const resetPassword = async (
+  resetPasswordRequest: ResetPasswordRequest,
 ) => {
-  return await HttpClient.put<UserProfileResponse>(
-    "/users/email",
-    updateUserEmailRequest,
-  );
+  return await HttpClient.put<null>("/users/password", resetPasswordRequest);
 };
 
 export const register = async (registerRequest: RegisterRequest) => {

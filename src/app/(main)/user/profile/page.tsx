@@ -5,7 +5,7 @@ import { EditOutlined, CopyOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useUserProfile } from "../context/UserProfileContext";
 import UpdateUserProfileModal from "./components/UpdateUserProfileModal";
-import UpdateUserEmailModal from "./components/UpdateUserEmailModal";
+import ResetPasswordModal from "./components/ResetPasswordModal";
 
 const { Title } = Typography;
 
@@ -13,8 +13,7 @@ export default function ProfilePage() {
   const { userProfile } = useUserProfile();
   const [openUpdateUserProfileModal, setOpenUpdateUserProfileModal] =
     useState(false);
-  const [openUpdateUserEmailModal, setOpenUpdateUserEmailModal] =
-    useState(false);
+  const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
 
   const handleCopyId = () => {
     if (userProfile?.id) {
@@ -62,9 +61,16 @@ export default function ProfilePage() {
               {userProfile?.email || ""}
             </span>
           </div>
+        </div>
+
+        <div className="flex justify-between items-center pb-4 border-b border-gray-200">
+          <div className="flex flex-col gap-y-1">
+            <span>密码</span>
+            <span className="text-ant-grey-500">********</span>
+          </div>
           <EditOutlined
             className="cursor-pointer"
-            onClick={() => setOpenUpdateUserEmailModal(true)}
+            onClick={() => setOpenResetPasswordModal(true)}
           />
         </div>
       </Space>
@@ -74,9 +80,9 @@ export default function ProfilePage() {
         onCancel={() => setOpenUpdateUserProfileModal(false)}
       />
 
-      <UpdateUserEmailModal
-        open={openUpdateUserEmailModal}
-        onCancel={() => setOpenUpdateUserEmailModal(false)}
+      <ResetPasswordModal
+        open={openResetPasswordModal}
+        onCancel={() => setOpenResetPasswordModal(false)}
       />
     </div>
   );

@@ -8,7 +8,7 @@ export interface UpdateUserProfileRequest {
   name: string;
 }
 
-export interface UpdateUserEmailRequest {
-  email: string;
-  otp: string;
+export interface ResetPasswordRequest {
+  currentPassword: string;
+  newPassword: string;
 }

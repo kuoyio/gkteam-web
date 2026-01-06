@@ -43,8 +43,9 @@ async function fetchWithTimeout(
 async function refreshTokens(
   refreshToken: string,
 ): Promise<TokenResponse | null> {
+  const refreshUrl = `${API_BASE_URL}/auth/refresh`;
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+    const response = await fetch(refreshUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refreshToken, device: "WEB" }),
@@ -53,7 +54,9 @@ async function refreshTokens(
     return result.data?.accessToken && result.data?.refreshToken
       ? result.data
       : null;
-  } catch {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`[Proxy] Refresh tokens failed: ${errorMessage}`);
     return null;
   }
 }
@@ -172,6 +175,8 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
   const { pathname, search } = request.nextUrl;
   const targetUrl = `${API_BASE_URL}${pathname.replace(/^\/api/, "")}${search}`;
 
+  console.log(`[Proxy] ${request.method} ${pathname} -> ${targetUrl}`);
+
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
@@ -240,6 +245,13 @@ async function handleApiProxy(request: NextRequest): Promise<NextResponse> {
         { status: 504 },
       );
     }
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    console.error(`[Proxy] Request failed: ${targetUrl}`);
+    console.error(`[Proxy] Error: ${errorMessage}`);
+    if (errorStack) {
+      console.error(`[Proxy] Stack: ${errorStack}`);
+    }
     return NextResponse.json(
       { code: "502", message: "服务暂时不可用，请稍后再试" },
       { status: 502 },
@@ -253,6 +265,8 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   if (!pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
+
+  console.log(`[Proxy] Incoming request: ${request.method} ${pathname}`);
 
   if (!API_BASE_URL) {
     return NextResponse.json(

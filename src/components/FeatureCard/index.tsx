@@ -27,7 +27,7 @@ const FeatureCard = ({
 
   return (
     <div
-      className={`absolute ${position} z-30 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white hidden sm:block w-[230px] ${animationClassName}`}
+      className={`absolute ${position} z-30 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white hidden sm:block w-[235px] ${animationClassName}`}
     >
       <div className="flex items-center gap-3">
         <div

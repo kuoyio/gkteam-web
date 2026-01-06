@@ -39,7 +39,7 @@ const TextEasterEgg = () => {
 
   return (
     <Text
-      className={`text-center cursor-pointer text-[10px] text-ant-grey-500 uppercase tracking-[0.5em] font-medium opacity-30 select-none block`}
+      className={`text-center text-[10px] text-ant-grey-500 uppercase tracking-[0.5em] font-medium opacity-30 select-none block`}
       onClick={handleClick}
     >
       {easterEggTexts[currentIndex]}

@@ -4,6 +4,7 @@ import { Menu } from "antd";
 import { useMemo, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  CalculatorOutlined,
   FileTextOutlined,
   HistoryOutlined,
   InfoCircleOutlined,
@@ -28,6 +29,13 @@ export const SiteNavBarItems = [
     key: "/tool",
     label: "练习工具",
     icon: <ToolOutlined />,
+    children: [
+      {
+        key: "/tool/calculation-practice",
+        label: "速算练习",
+        icon: <CalculatorOutlined />,
+      },
+    ],
   },
   {
     key: "/site",
